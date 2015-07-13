@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset = utf-8">
+	<title>B12090304</title>
+	<link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+  <script type="text/javascript" src="js/jquery.min.js" ></script>
+  <style type="text/css">
+    body{
+      text-align: center;
+      background-color:white;
+    }
+    div.ui.input{
+      margin:20px 0;
+    }
+    table{
+      align: center;
+      margin-bottom: 20px;
+    }
+    td{
+      width: 20px;
+      height: 20px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      background-color: white;
+      box-sizing: content-box; 
+    }
+    td img{
+      width: 30px;
+    }
+
+  </style>
+
+
+</head>
+<body>
+<h2 style="margin-top:30px;">n元棋盘问题</h2>
+<div class="ui action input">
+  <input type="text" value="" id="n" placeholder="输入n 且n大于等于4">
+  <button class="ui teal right labeled button" id="btn">
+    确认
+  </button>
+
+</div>
+<div id="answer" style="text-align:center;">
+  
+
+</div>
+
+<script type="text/javascript">
+$(function (){
+  $("#btn").on("click",function(){
+    $("#answer").html("");
+    n = $("#n").val();
+    console.log(n);
+    count = 0;
+    var result = new Array(n);
+    eightQueen(result,0);
+    console.log(count);
+  });
+  
+});
+    function eightQueen(res,x)
+    {
+      var result = new Array();
+      result = res;
+      if(x == n){
+        draw(result);
+        return
+      }
+      for(var i = 0; i < n; i++)
+      {
+        result[x] = i;
+        if(checkResult(result,x))
+        {
+          eightQueen(result,x+1);
+        }
+      }
+    }
+    function checkResult(result,x)
+    {
+      for(var i = 0; i < x; i++)
+      {
+        if(result[i] == result[x] || Math.abs(result[i]-result[x]) === Math.abs(i-x))
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+    function arrCopy(a,b)
+    {
+      for (var i = a.length - 1; i >= 0; i--) {
+        b[i] = a[i];
+      };
+    }
+    function draw(result){
+      console.log(result);
+      count++;
+      var tpl = $("#answer").html();
+      $("#answer").html(tpl+"<table align='center' id='table_"+count+"''><th>"+count+"</th></table>");
+
+      for (var i = 0; i < n ; i++) {
+        // tpl+="<tr id='tr_"+i+"''></tr>"
+        $('#table_'+count).html($('#table_'+count).html()+"<tr id='tr_"+i+"''></tr>")
+        for (var j = 0; j < n; j++) {
+
+          var tpl = $('#table_'+count+" #tr_"+i).html();
+          console.log(tpl);
+          if(result[i] == j){
+            tpl+="<td>"+"<img src='queen.png'>"+"</td>"
+          }else{
+            tpl+="<td></td>";
+          }
+          $('#table_'+count+" #tr_"+i).html(tpl);
+        }
+      };
+    }
+
+</script>
+</body>
+</html>
